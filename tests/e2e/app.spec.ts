@@ -97,12 +97,14 @@ test('ships immutable asset caching and browser hardening deployment policy', as
   expect(response.ok()).toBeTruthy();
   const config = await response.json() as {
     globalHeaders: Record<string, string>;
+    mimeTypes: Record<string, string>;
     routes: Array<{ route: string; headers: Record<string, string> }>;
   };
   const assetRoute = config.routes.find((route) => route.route === '/assets/*');
   const manifestRoute = config.routes.find((route) => route.route === '/manifest.webmanifest');
 
   expect(assetRoute?.headers['Cache-Control']).toBe('public, max-age=31536000, immutable');
+  expect(config.mimeTypes['.webmanifest']).toBe('application/manifest+json');
   expect(manifestRoute?.headers['Content-Type']).toBe('application/manifest+json');
   expect(config.globalHeaders['Content-Security-Policy']).toContain("frame-ancestors 'none'");
   expect(config.globalHeaders['Content-Security-Policy']).toContain("connect-src 'self' https://api.sociobot.in");

@@ -14,7 +14,7 @@ Sociobot license flow.
   home `144 × 44`, unlock `128.03 × 44`, Privacy `54.61 × 44`, Terms `44 × 44`.
 - `public/staticwebapp.config.json` is emitted at the root of `dist/` for the
   static deployment. It gives content-hashed `/assets/*` a one-year immutable
-  cache policy, keeps `sw.js` revalidatable, serves the manifest as
+  cache policy, keeps `sw.js` revalidatable, maps the manifest to
   `application/manifest+json`, and adds CSP, Permissions-Policy,
   `X-Frame-Options: DENY`, nosniff, and strict-origin referrer policy.
 - Regression coverage verifies both the reported mobile target dimensions and
