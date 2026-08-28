@@ -1,0 +1,7 @@
+{
+  "generator": "Azure AI Foundry factory-image via /opt/fleet/lib/gen-image.sh",
+  "generated": "2026-08-28",
+  "size": "1536x1024",
+  "quality": "medium",
+  "prompt": "Use case: stylized-concept. Asset type: onboarding illustration for an offline barcode-label utility. An overhead editorial still life showing a purchase-list sheet on the left, a compact generic thermal label printer in the center, and a curling strip of blank barcode-like labels emerging to the right, communicating list-to-label transformation. Small maker stockroom proofing desk. Two-color risograph and coarse one-bit halftone editorial print, tactile paper grain, imperfect registration, screen-printed shapes. Wide landscape, isolated objects, generous breathing room, clear left-to-right flow. Flat graphic light, practical and confident. Warm oatmeal paper, carbon black ink, burnt signal orange, tiny registration-blue accents. Barcode marks must be abstract and non-scannable. No readable text, no people, no brands, no logos, no watermark, no gradients, no photorealism, no extra objects."
+}

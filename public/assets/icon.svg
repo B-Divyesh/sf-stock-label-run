@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Stock Label Run mark">
+  <rect width="512" height="512" rx="92" fill="#f3eedc"/>
+  <path d="M86 102h340v308H86z" fill="#fffdf4" stroke="#171a17" stroke-width="22"/>
+  <path fill="#c7471c" d="M104 121h304v70H104z"/>
+  <g fill="#171a17"><path d="M124 233h17v109h-17zM151 233h34v109h-34zM197 233h12v109h-12zM220 233h25v109h-25zM258 233h45v109h-45zM316 233h13v109h-13zM342 233h37v109h-37z"/></g>
+  <path d="M126 370h260" stroke="#195b73" stroke-width="14" stroke-dasharray="25 11"/>
+</svg>
