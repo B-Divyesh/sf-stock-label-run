@@ -2,24 +2,27 @@
 
 ## Independent QA result: FAIL
 
-Candidate `1f9f0ecccb9322d96074875ae3f83a4e381350b7` was verified on
+Candidate `1f9f0ecccb9322d96074875ae3f83a4e381350b7` was freshly verified on
 2026-08-28 against <https://stock-label-run.sociobot.in>. The live deployment
-matches the candidate byte-for-byte for the HTML, service worker, manifest,
-legal pages, and hashed JS/CSS assets.
+matches every candidate `dist/` file byte-for-byte, and the earlier
+deployment-only rate-limit failure is resolved: a fresh 80-request burst
+received 30 HTTP 200 responses then 50 HTTP 429 responses, with
+`Retry-After: 0` (threshold: request 31).
 
-**Release blocker:** 80 simultaneous invalid-token requests to the required
-Sociobot product verification endpoint all returned HTTP 200; none returned
-HTTP 429 or a `Retry-After` header. The observed rate-limit threshold is
-greater than 80 / not observed. The product cannot pass until the factory API
-adds rate limiting for this endpoint.
+**Current release blocker:** at the required 390 px mobile viewport, the
+Unlock run room control is 32 px high, Privacy/Terms links are 20 px high,
+and the home link is 40 px high. These fail the supplied 44 x 44 CSS px touch
+target requirement despite passing Axe and keyboard checks.
 
-Also address the non-blocking deployment hardening defects: content-hashed
-assets use `max-age=30` rather than immutable caching; root responses have no
-Content-Security-Policy or Permissions-Policy; and the manifest is served as
-`application/octet-stream`.
+Also fix the non-blocking deployment hardening defects: content-hashed assets
+use `max-age=30` rather than immutable caching; root responses lack CSP,
+Permissions-Policy, and frame-embedding protection. The octet-stream manifest
+MIME type is accepted by Chromium and is recorded as an observation, not the
+current blocker.
 
-See [`.factory/verification.md`](verification.md) for complete exact evidence,
-passed checks, defects, and reproduction steps.
+See [`.factory/verification-3.md`](verification-3.md) for exact test evidence,
+defects, headers, PWA/offline results, and reproduction steps. It supersedes
+the earlier rate-limit finding in [`.factory/verification.md`](verification.md).
 
 ## Builder handoff (superseded by independent verification)
 
