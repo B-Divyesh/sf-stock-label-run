@@ -1,0 +1,30 @@
+{
+  "slug": "stock-label-run",
+  "title": "Stock Label Run",
+  "territory": "utilities",
+  "user": "Small shops and makers who receive stock and need a local, repeatable way to turn a purchase list into correct barcode labels and a print receipt.",
+  "evidence": [
+    {
+      "url": "https://hn.algolia.com/api/v1/items/47107343",
+      "date": "2026-02-22",
+      "quote_or_summary": "A local-first barcode tool creator reports that small businesses and sellers face expensive subscriptions or awkward tools when printing bulk inventory labels."
+    },
+    {
+      "url": "https://github.com/grocy/grocy/issues/2748",
+      "date": "2025-06-05",
+      "quote_or_summary": "A Grocy user requests that stock-entry label-print webhooks include product details and the stock-entry object during purchase, showing the handoff from receiving to labeling is incomplete."
+    }
+  ],
+  "recurrence": "Current 2025–2026 evidence points to the same receiving-time workflow: label creation must retain item and stock-entry context without an enterprise label suite.",
+  "current_workaround": "Copy product names into label templates, create barcodes one at a time, or pay for BarTender-class software.",
+  "incumbents_and_gap": "BarTender, ZebraDesigner, Sortly, and inventory suites are capable but costly or broad; small receiving runs need a local CSV-to-label workflow with a proof of what printed.",
+  "smallest_useful_product": "Offline PWA that imports a CSV, validates SKU/barcode values, lays out label sheets, prints browser/PDF labels, and saves a printable run receipt. Non-goals: barcode allocation authority, POS, inventory database, or printer-driver management.",
+  "success_measure": "A pilot user prints a 50-item receiving run with zero manual retyping and reconciles every printed label to an imported SKU in under 15 minutes.",
+  "artifact_class": "pwa-offline",
+  "monetization": "one-time — label generation is a local utility and print volumes should not create a monthly tax.",
+  "constraints": "Support only documented barcode symbologies and checksum validation; preserve CSV locally; do not claim marketplace-specific label compliance without test fixtures.",
+  "est_build_effort": "S",
+  "why_distinct": "The differentiator is receiving-run traceability, not another online barcode generator.",
+  "confidence": 4,
+  "state": "BUILT"
+}
