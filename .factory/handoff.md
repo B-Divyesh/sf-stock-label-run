@@ -53,6 +53,14 @@ Sociobot license flow.
 - Lighthouse mobile against the production preview: Performance **99**,
   Accessibility **100**, Best Practices **100**; FCP 1.0 s, LCP 2.0 s, TBT
   60 ms, CLS 0.
+- Live deployment: factory static deployment `ee05c622-f173-4cb5-88e5-4aed082dd712`
+  completed successfully to <https://stock-label-run.sociobot.in>. Live root,
+  JS, and CSS bytes match the built `dist/` files. The live 390 px check again
+  measured `144 × 44`, `128.03 × 44`, `54.61 × 44`, and `44 × 44` for the four
+  repaired targets; it also passed Axe, same-origin request capture, offline
+  reload, and console/page-error checks. Live responses now expose the CSP,
+  Permissions-Policy, `X-Frame-Options: DENY`, immutable asset cache policy,
+  and `application/manifest+json` manifest MIME type.
 
 ## Run and deploy
 
