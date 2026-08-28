@@ -34,7 +34,7 @@ img { max-width: 100%; height: auto; display: block; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 
 .topbar { min-height: 72px; padding: 12px max(24px, env(safe-area-inset-right)) 12px max(24px, env(safe-area-inset-left)); display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--ink); background: var(--paper); }
-.brand { display: flex; gap: 12px; align-items: center; color: var(--ink); font-family: var(--display); font-size: 18px; text-decoration: none; letter-spacing: -.02em; }
+.brand { min-width: 44px; min-height: 44px; display: flex; gap: 12px; align-items: center; color: var(--ink); font-family: var(--display); font-size: 18px; text-decoration: none; letter-spacing: -.02em; }
 .brand-mark { width: 32px; height: 32px; display: flex; gap: 2px; align-items: stretch; padding: 5px 4px; border: 2px solid var(--ink); background: var(--stock); box-shadow: 3px 3px 0 var(--orange); transform: rotate(-2deg); }
 .brand-mark i { display: block; flex: 1; background: var(--ink); }
 .brand-mark i:nth-child(2) { flex: .45; }.brand-mark i:nth-child(3) { flex: 1.5; }
@@ -148,7 +148,7 @@ td input:hover, td select:hover, td input:focus, td select:focus { border-color:
 .license-panel h2 { max-width: 650px; font-size: clamp(30px, 4vw, 46px); }.license-panel > p { max-width: 680px; color: #e7e2d2; }.license-panel .section-number { color: #f77a4e; }.license-panel .primary-button { margin-block: 14px 28px; }.close-license { position: absolute; right: 8px; top: 8px; }.restore-form { display: grid; gap: 10px; margin-block: 10px 26px; }.restore-form > div { display: grid; grid-template-columns: 1fr auto; }.restore-form input { background: var(--stock); }.license-message { min-height: 24px; color: #f0bd68 !important; }.license-panel small { display: block; color: #c9c5b8; }.license-panel a:not(.primary-button) { color: #ff9c76; }.license-good { padding: 18px; border: 1px solid #71af86; }.license-good span { margin-right: 10px; }
 
 body > #app > footer { padding: 32px max(32px, calc((100vw - 1376px) / 2)); display: grid; grid-template-columns: 1fr auto; gap: 12px 24px; align-items: center; color: var(--muted); border-top: 2px solid var(--ink); background: var(--stock); font-size: 13px; }
-body > #app > footer p { margin: 0; }.provenance { grid-column: 1 / -1; }body > #app > footer nav { display: flex; gap: 18px; align-items: center; }.text-link { min-height: 44px; display: inline-flex; align-items: center; color: var(--orange-dark); text-decoration: underline; cursor: pointer; }
+body > #app > footer p { margin: 0; }.provenance { grid-column: 1 / -1; }body > #app > footer nav { display: flex; gap: 18px; align-items: center; }body > #app > footer nav a { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }.text-link { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; color: var(--orange-dark); text-decoration: underline; cursor: pointer; }
 .toast { position: fixed; z-index: 100; right: 20px; bottom: 20px; max-width: 360px; padding: 12px; pointer-events: none; }
 .print-label-pages, .run-receipt { display: none; }
 
@@ -160,7 +160,7 @@ body > #app > footer p { margin: 0; }.provenance { grid-column: 1 / -1; }body > 
 
 @media (max-width: 700px) {
   body { font-size: 16px; }
-  .topbar { align-items: flex-start; padding: 12px 16px; }.brand > span:last-child { max-width: 100px; line-height: 1.1; }.top-actions { gap: 4px; align-items: flex-end; flex-direction: column; }.connection { font-size: 10px; }.license-button { min-height: 32px; padding-block: 2px; font-size: 12px; }
+  .topbar { align-items: flex-start; padding: 12px 16px; }.brand > span:last-child { max-width: 100px; line-height: 1.1; }.top-actions { gap: 4px; align-items: flex-end; flex-direction: column; }.connection { font-size: 10px; }.license-button { min-height: 44px; padding-block: 11px; font-size: 12px; }
   main { padding: 0 16px 64px; }.intro { padding: 54px 0; gap: 44px; }.intro-compact { padding: 40px 0 24px; }.hero-print { box-shadow: 7px 7px 0 var(--ink); }.hero-print figcaption { right: -6px; }
   .run-steps a { min-height: 84px; display: flex; gap: 8px; align-items: center; padding: 10px 6px; }.run-steps a > span { flex: 0 0 32px; width: 32px; height: 32px; }.run-steps b { font-size: 13px; }.run-steps small { display: none; }
   .import-section, .check-section, .print-settings { padding: 52px 0; }.source-summary { grid-template-columns: auto 1fr; }.source-summary button { grid-column: span 1; }.file-stamp { grid-row: 1; }

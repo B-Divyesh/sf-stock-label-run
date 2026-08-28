@@ -1,5 +1,12 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+
+async function expectTouchTarget(locator: Locator): Promise<void> {
+  const box = await locator.boundingBox();
+  expect(box, 'target should have a rendered bounding box').not.toBeNull();
+  expect(box!.width, 'target width').toBeGreaterThanOrEqual(44);
+  expect(box!.height, 'target height').toBeGreaterThanOrEqual(44);
+}
 
 test('imports, validates, persists, and archives a receiving run', async ({ page }) => {
   await page.goto('/');
@@ -56,9 +63,49 @@ test('reopens the installed shell and local draft offline', async ({ page, conte
   await context.setOffline(false);
 });
 
+test('shows the in-app notice when a service worker update is ready', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) {
+      await new Promise<void>((resolve) => navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true }));
+    }
+    navigator.serviceWorker.dispatchEvent(new MessageEvent('message', { data: { type: 'UPDATE_AVAILABLE' } }));
+  });
+  await expect(page.getByRole('status').filter({ hasText: 'A fresh version is ready. Reload to update.' })).toBeVisible();
+});
+
 test('legal routes are complete standalone pages', async ({ page }) => {
   await page.goto('/privacy/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Privacy stays/);
   await page.goto('/terms/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Useful labels/);
+});
+
+test('keeps the reported 390px controls at least 44 by 44 CSS pixels', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'This regression is specific to the required mobile viewport.');
+  await page.goto('/');
+
+  await expectTouchTarget(page.getByRole('link', { name: 'Stock Label Run home' }));
+  await expectTouchTarget(page.getByRole('button', { name: 'Unlock run room' }));
+  await expectTouchTarget(page.getByRole('link', { name: 'Privacy', exact: true }));
+  await expectTouchTarget(page.getByRole('link', { name: 'Terms', exact: true }));
+});
+
+test('ships immutable asset caching and browser hardening deployment policy', async ({ request }) => {
+  const response = await request.get('/staticwebapp.config.json');
+  expect(response.ok()).toBeTruthy();
+  const config = await response.json() as {
+    globalHeaders: Record<string, string>;
+    routes: Array<{ route: string; headers: Record<string, string> }>;
+  };
+  const assetRoute = config.routes.find((route) => route.route === '/assets/*');
+  const manifestRoute = config.routes.find((route) => route.route === '/manifest.webmanifest');
+
+  expect(assetRoute?.headers['Cache-Control']).toBe('public, max-age=31536000, immutable');
+  expect(manifestRoute?.headers['Content-Type']).toBe('application/manifest+json');
+  expect(config.globalHeaders['Content-Security-Policy']).toContain("frame-ancestors 'none'");
+  expect(config.globalHeaders['Content-Security-Policy']).toContain("connect-src 'self' https://api.sociobot.in");
+  expect(config.globalHeaders['Permissions-Policy']).toContain('camera=()');
+  expect(config.globalHeaders['X-Frame-Options']).toBe('DENY');
 });
