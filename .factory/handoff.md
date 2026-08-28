@@ -1,4 +1,27 @@
-# Stock Label Run — build handoff
+# Stock Label Run — verification handoff
+
+## Independent QA result: FAIL
+
+Candidate `1f9f0ecccb9322d96074875ae3f83a4e381350b7` was verified on
+2026-08-28 against <https://stock-label-run.sociobot.in>. The live deployment
+matches the candidate byte-for-byte for the HTML, service worker, manifest,
+legal pages, and hashed JS/CSS assets.
+
+**Release blocker:** 80 simultaneous invalid-token requests to the required
+Sociobot product verification endpoint all returned HTTP 200; none returned
+HTTP 429 or a `Retry-After` header. The observed rate-limit threshold is
+greater than 80 / not observed. The product cannot pass until the factory API
+adds rate limiting for this endpoint.
+
+Also address the non-blocking deployment hardening defects: content-hashed
+assets use `max-age=30` rather than immutable caching; root responses have no
+Content-Security-Policy or Permissions-Policy; and the manifest is served as
+`application/octet-stream`.
+
+See [`.factory/verification.md`](verification.md) for complete exact evidence,
+passed checks, defects, and reproduction steps.
+
+## Builder handoff (superseded by independent verification)
 
 ## Shipped
 
