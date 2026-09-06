@@ -1,60 +1,103 @@
-# Stock Label Run — verification 4 handoff
+# Stock Label Run — repair 2 handoff
 
 ## Result
 
-**FAIL** on 5 September 2026 UTC with **7 findings** and **14 untested public
-claim groups**. See [verification-4.md](verification-4.md) for evidence and
-reproduction details.
+The repaired local implementation is ready to deploy.
 
-- Implementation candidate:
-  `d30c9b30baf8a9da3235614a8a5d853d3d2d074a`
-- Documentation commit reviewed:
-  `88eb2dcca76607b1a1e48b27b7d5f5a6ebe1ca11`
-- Live URL: <https://stock-label-run.sociobot.in>
+- Implementation commit: 9738963abfaa72f28ade7202d5d902930c8305c9
+- Product: an offline, local-first tool for small shops and makers to turn a
+  receiving CSV into checked barcode labels and a saved print receipt.
+- First action: Try it with sample data opens a populated nine-label demo.
 
-## Required repairs
+## What changed
 
-1. Implement `/demo` as an isolated storage namespace with the required
-   persistent banner, reset, and start-real controls. Add `.factory/demo.md`.
-2. Enable or remove the broken one-time purchase. The live checkout currently
-   returns HTTP 404.
-3. Add `.factory/claims.json` and one tagged sandbox test for every public
-   claim. There are currently no claim entries or tags.
-4. Raise all populated mobile controls and legal-page links to at least 44 × 44
-   CSS px, not only the four controls from verification 3.
-5. Put the audience, sample action, and three facts in the first viewport; add
-   the required landing order, shared header/footer details, and
-   `.factory/copy-audit.md`.
-6. Add a designed 404 with a real 404 status, `robots.txt`, `sitemap.xml`,
-   canonical/Open Graph/Twitter metadata, Apple touch metadata, and a distinct
-   demo title.
-7. Make restored receipt history reachable when no active CSV is loaded.
+1. Demo isolation: /demo now has the title Demo — Stock Label Run, immediately
+   seeds the realistic sample, shows the persistent demo banner, and uses only
+   the demo:stock-label-run IndexedDB namespace. Reset demo reseeds that
+   namespace. Start for real deletes it and preserves normal stock-label-run
+   data.
+2. Landing and mobile: the first screen names the job and audience, exposes
+   the sample action plus private/offline/free facts, and fits them into fresh
+   desktop and 390 px phone views. All populated editable controls and legal
+   links meet the 44 px touch target rule.
+3. Recovery and records: restored receipt backups open Run receipts from the
+   empty state. Printed receipt, JSON backup, delete, invalid data, boundary,
+   and offline paths have browser regressions.
+4. Site structure: added the demo multi-page entry, designed 404, robots,
+   sitemap, canonical/Open Graph/Twitter/Apple metadata, social image, route
+   titles, shared navigation/footer details, and an CSP-safe offline page.
+5. Proof: added 14 sandboxed public claims in .factory/claims.json, each with
+   one tagged Playwright outcome test. Added .factory/demo.md and the required
+   copy audit.
+6. Paid upgrade: preserved the US $12 one-time Run room upgrade and the
+   restore/verify path. The broken checkout link is no longer shown. The app
+   now says checkout is unavailable pending external billing registration.
 
-## Verified passing behavior
+## Verification
 
-- Clean `npm ci`, `npm audit --omit=dev`, `npm test`, and `npm run build` pass.
-  The suite reports 6 unit tests, 14 passed Playwright tests, and 2 intended
-  skips.
-- The sample, realistic label proof, print receipt, receipt persistence,
-  export, invalid input, 999 boundary, 150-label gate, and recovery messages
-  work.
-- Live offline reload, update notice handling, installability, same-origin free
-  workflow, security headers, immutable caching, and manifest MIME type pass.
-- Live Axe has zero violations in the three tested states. Lighthouse mobile
-  is 100 Performance, 100 Accessibility, 100 Best Practices, and 92 SEO.
-- Live runtime bytes match the implementation candidate.
-- Earlier cache, header, manifest, rate-limit, and four named touch-target
-  findings are resolved. Rate limiting begins at request 31 and includes
-  `Retry-After`.
+From a clean dependency install:
 
-## Run verification
+    npm ci
+    npm audit --omit=dev
+    npm test
+    npm run build
 
-```sh
-npm ci
-npm audit --omit=dev
-npm test
-npm run build
-```
+Results on 6 September 2026 UTC:
 
-No product code or deployment was changed. Only this handoff and the independent
-verification report were added or updated.
+- npm audit --omit=dev: 0 vulnerabilities.
+- npm test: 6 Vitest tests passed; 35 Playwright tests passed; one desktop-only
+  duplicate mobile regression was intentionally skipped.
+- npm run build: passed and emitted dist/index.html plus the /demo entry.
+- Every one of the 14 commands declared in .factory/claims.json passed from
+  the documented setup.
+- Playwright Axe scans passed with no serious or critical issues on root,
+  populated demo, and Terms. The separate axe CLI attempt could not locate a
+  compatible Selenium ChromeDriver for the worker’s Chromium 145; the shipped
+  Playwright Axe integration is the equivalent required check.
+- verify-url.sh against the production build preview passed: title, lang, one
+  h1, main, image alt text, labels, and zero browser console errors.
+- Fresh 1440 × 900 and 390 × 844 browser screenshots were reviewed. The job,
+  audience, sample action, and all three facts are visible before scrolling.
+- Final initial assets: JavaScript 34.11 KB (12.15 KB gzip), CSS 22.40 KB
+  (5.72 KB gzip), hero 126.56 KB, social image 111.41 KB.
+- Lighthouse 11 was attempted against the same local preview using the bundled
+  Chromium. It did not complete because that browser’s DevTools trace shape is
+  newer than the installed Lighthouse collector. No final Lighthouse score is
+  claimed; the asset budgets, verify-url, and Playwright accessibility checks
+  above passed.
+
+## Previous verification disposition
+
+| Verification 4 finding | Current disposition |
+| --- | --- |
+| Demo wrote sample data into normal IndexedDB | Resolved with the dedicated demo namespace, banner, reset, exit, and regression. |
+| Checkout returned 404 | External billing registration remains unavailable; no broken checkout link is advertised. Offer metadata is supplied for the billing operator. |
+| Claims registry missing | Resolved with 14 runnable tagged sandbox claims. |
+| Populated mobile controls were 40 px | Resolved; full populated phone control scan passes. |
+| First-screen/site order incomplete | Resolved with plain first-screen copy, facts, shared navigation/footer, copy audit, and paid section. |
+| Routes, metadata, and 404 incomplete | Resolved in the static build. Live HTTP status still requires the deployment check after this handoff. |
+| Restored receipts inaccessible from empty state | Resolved; restore opens the receipt archive and the empty import view retains a Run receipts control. |
+
+Earlier immutable cache, CSP, Permissions-Policy, frame protection, manifest
+MIME type, and billing verification rate-limit fixes remain present in
+staticwebapp.config.json or the external verification service respectively.
+
+## Billing dependency
+
+The billing-registration operator must register the existing one-time offer
+before a hosted checkout can be active. The exact public metadata is in
+.factory/billing-offer.json and was copied to /work/.evidence/billing-offer.json.
+It records the product origin, US $12 minor-unit price, one-time price type,
+paid features, return URL, and license validation URL. No payment credentials
+are stored in this repository.
+
+## Deployment and next steps
+
+Push implementation commit 9738963 to trigger the static product deployment,
+then cold-check https://stock-label-run.sociobot.in/, /demo, /privacy/,
+/terms/, and a missing route. Confirm the live 404 response override returns
+the designed 404 with HTTP 404 rather than the app fallback.
+
+The only known functional dependency is billing registration. Free CSV import,
+checking, A4 30-up labels, receipt history, backup, demo, and offline use do
+not depend on it.
