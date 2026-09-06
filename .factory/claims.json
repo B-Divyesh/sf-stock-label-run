@@ -1,0 +1,100 @@
+[
+  {
+    "id": "demo-sandbox",
+    "claim": "Try it with sample data opens a separate demo that never changes real data.",
+    "where": "landing action, demo banner, README",
+    "test": "npm run test:claims -- --grep @claim:demo-sandbox",
+    "sandbox": "real pasted CSV, then /demo; assert separate IndexedDB names, reset, and Start for real preserves the real draft"
+  },
+  {
+    "id": "private-free-workflow",
+    "claim": "The free sample workflow makes requests only to this product origin.",
+    "where": "landing facts, privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:private-free-workflow",
+    "sandbox": "fresh browser context on /demo; record every request during the populated sample flow"
+  },
+  {
+    "id": "csv-import",
+    "claim": "CSV imports accept documented header aliases, quoted fields, and a default quantity of one.",
+    "where": "README",
+    "test": "npm run test:claims -- --grep @claim:csv-import",
+    "sandbox": "fresh root page; paste aliased CSV with a quoted comma and blank quantity; assert a printable one-label run"
+  },
+  {
+    "id": "csv-file-guards",
+    "claim": "Only CSV files up to 2 MB are accepted.",
+    "where": "import help",
+    "test": "npm run test:claims -- --grep @claim:csv-file-guards",
+    "sandbox": "fresh root page; choose a non-CSV file and a 2 MB plus one byte CSV; assert recovery messages"
+  },
+  {
+    "id": "gtin-validation",
+    "claim": "EAN-13 and UPC-A checksums are checked before printing.",
+    "where": "check explanation, README, terms",
+    "test": "npm run test:claims -- --grep @claim:gtin-validation",
+    "sandbox": "fresh root page; import one invalid EAN-13 and one valid UPC-A, then correct the EAN-13 and assert printable state"
+  },
+  {
+    "id": "code-validation",
+    "claim": "Code 39 and Code 128 subset B values are checked before printing.",
+    "where": "README, terms",
+    "test": "npm run test:claims -- --grep @claim:code-validation",
+    "sandbox": "fresh root page; import valid Code 39 and Code 128 rows, then make Code 39 lowercase and assert the actionable error"
+  },
+  {
+    "id": "a4-label-sheet",
+    "claim": "The A4 30-up layout prints through the browser print dialog.",
+    "where": "print settings, README",
+    "test": "npm run test:claims -- --grep @claim:a4-label-sheet",
+    "sandbox": "demo sample; trigger Print label run, emulate print media, assert one 210 mm sheet with nine generated labels"
+  },
+  {
+    "id": "receipt-history",
+    "claim": "A run receipt records the printed source, SKU count, and label count in local history.",
+    "where": "landing copy, workspace",
+    "test": "npm run test:claims -- --grep @claim:receipt-history",
+    "sandbox": "demo sample; print receipt only, open Run receipts, and assert the visible receipt facts"
+  },
+  {
+    "id": "backup-round-trip",
+    "claim": "Run receipts export and restore as a JSON backup, including from the empty state.",
+    "where": "footer, README, privacy page",
+    "test": "npm run test:claims -- --grep @claim:backup-round-trip",
+    "sandbox": "fresh root page; import a valid receipt JSON, open restored Run receipts without a CSV, then trigger export"
+  },
+  {
+    "id": "free-label-limit",
+    "claim": "Free runs print up to 150 labels while CSV checking and receipt backup stay free.",
+    "where": "upgrade panel, terms",
+    "test": "npm run test:claims -- --grep @claim:free-label-limit",
+    "sandbox": "fresh root page; import a valid 151-label row, attempt receipt print, and assert upgrade state while core controls remain enabled"
+  },
+  {
+    "id": "receipt-delete",
+    "claim": "You can delete an individual run receipt.",
+    "where": "privacy page",
+    "test": "npm run test:claims -- --grep @claim:receipt-delete",
+    "sandbox": "demo sample; create one receipt, confirm deletion, and assert the empty receipt archive"
+  },
+  {
+    "id": "license-daily-check",
+    "claim": "License verification runs at most once per day and never blocks free work.",
+    "where": "privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:license-daily-check",
+    "sandbox": "fresh root page with a fixture license verdict; mock the verify response, assert no daily duplicate and usable CSV import"
+  },
+  {
+    "id": "offline-reload",
+    "claim": "The populated demo opens after the network disappears once the app has loaded.",
+    "where": "landing facts, README",
+    "test": "npm run test:claims -- --grep @claim:offline-reload",
+    "sandbox": "dedicated fresh browser context; load /demo under service-worker control, set offline, reload, and assert the sample remains"
+  },
+  {
+    "id": "pwa-shell-precache",
+    "claim": "The service worker caches the app shell, illustration, and legal pages.",
+    "where": "privacy page",
+    "test": "npm run test:claims -- --grep @claim:pwa-shell-precache",
+    "sandbox": "dedicated fresh browser context; wait for service-worker control and inspect cached request paths"
+  }
+]

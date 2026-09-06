@@ -1,6 +1,6 @@
 # Stock Label Run
 
-Stock Label Run is an offline-first receiving utility for small shops and makers. It turns a purchase-list CSV into validated barcode label sheets and a printable run receipt, without uploading the stock file or requiring an inventory suite.
+Stock Label Run is an offline-first receiving utility for small shops and makers. It turns a purchase-list CSV into checked barcode label sheets and a printable run receipt, without uploading the stock file or requiring an inventory suite.
 
 Live product: <https://stock-label-run.sociobot.in>
 
@@ -8,9 +8,20 @@ Live product: <https://stock-label-run.sociobot.in>
 
 - Imports CSV files or pasted CSV text with `name`, `sku`, `barcode`, and optional `quantity` and `symbology` columns.
 - Validates EAN-13 and UPC-A checksums, Code 39 characters, Code 128 subset B characters, and quantities before printing.
-- Produces deterministic SVG barcodes on A4 30-up sheets. The one-time Run room unlock adds A4 24-up and 50 × 30 mm roll layouts, unlimited labels per run, and custom footers.
+- Produces deterministic SVG barcodes on A4 30-up sheets. The Run room upgrade is US $12 once and adds A4 24-up and 50 × 30 mm roll layouts, unlimited labels per run, and custom footers.
 - Saves the original CSV, active draft, and printable receipt history locally in IndexedDB.
 - Exports/imports receipt backups as JSON and works after the network disappears.
+
+## Try the sample safely
+
+Open https://stock-label-run.sociobot.in/demo, or choose **Try it with sample
+data** from the first screen. The demo loads a nine-label receiving run in the
+separate demo:stock-label-run IndexedDB database. **Reset demo** only resets
+that data. **Start for real** discards it before returning to the normal app.
+
+The Run room upgrade checkout is temporarily unavailable while the factory
+registers the product with Sociobot billing. Existing license holders can still
+restore and verify a license. The free core remains usable.
 
 It does not allocate barcodes, certify marketplace compliance, manage inventory, or control printer drivers. Always scan a test sheet on the intended stock.
 
@@ -32,7 +43,7 @@ npm test
 npm run build
 ```
 
-`npm test` runs unit tests plus Playwright flows for desktop, 390 px mobile, accessibility, persistence, and offline reopening. The exact deployment command is `npm run build`; the static artifact is written to `dist/` with `dist/index.html` at its root.
+npm test runs unit tests plus Playwright flows for desktop, 390 px mobile, accessibility, persistence, demo isolation, and offline reopening. .factory/claims.json lists every public claim and its runnable regression command. The exact deployment command is npm run build; the static artifact is written to dist/ with dist/index.html at its root.
 
 ## CSV example
 

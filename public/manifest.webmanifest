@@ -3,7 +3,7 @@
   "short_name": "Label Run",
   "description": "Local CSV-to-barcode-label runs with printable receipts.",
   "id": "/?source=pwa",
-  "start_url": "/?v=1",
+  "start_url": "/?v=2",
   "scope": "/",
   "display": "standalone",
   "background_color": "#f3eedc",

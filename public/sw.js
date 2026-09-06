@@ -1,7 +1,7 @@
-const VERSION = 'slr-v1.0.0';
+const VERSION = 'slr-v1.1.0';
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
-const APP_SHELL = ['/', '/index.html', '/offline.html', '/privacy/', '/terms/', '/manifest.webmanifest', '/assets/icon.svg', '/assets/icon-192.png', '/assets/icon-512.png', '/assets/receiving-run.webp'];
+const APP_SHELL = ['/', '/index.html', '/demo/', '/demo/index.html', '/offline.html', '/offline.css', '/privacy/', '/terms/', '/404.html', '/robots.txt', '/sitemap.xml', '/manifest.webmanifest', '/assets/icon.svg', '/assets/icon-192.png', '/assets/icon-512.png', '/assets/receiving-run.webp', '/assets/social-preview.webp'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {

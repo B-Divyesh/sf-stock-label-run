@@ -1,11 +1,17 @@
 import type { Draft, SavedRun } from './types';
 
+export type StorageScope = 'real' | 'demo';
+
 const DB_NAME = 'stock-label-run';
 const DB_VERSION = 1;
 
-function openDb(): Promise<IDBDatabase> {
+export function databaseName(scope: StorageScope): string {
+  return scope === 'demo' ? `demo:${DB_NAME}` : DB_NAME;
+}
+
+function openDb(scope: StorageScope): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    const request = indexedDB.open(databaseName(scope), DB_VERSION);
     request.onupgradeneeded = () => {
       const db = request.result;
       if (!db.objectStoreNames.contains('app')) db.createObjectStore('app');
@@ -16,51 +22,73 @@ function openDb(): Promise<IDBDatabase> {
   });
 }
 
-export async function saveDraft(draft: Draft): Promise<void> {
-  const db = await openDb();
-  const transaction = db.transaction('app', 'readwrite');
-  transaction.objectStore('app').put(draft, 'draft');
-  await complete(transaction);
+export async function saveDraft(draft: Draft, scope: StorageScope): Promise<void> {
+  const db = await openDb(scope);
+  try {
+    const transaction = db.transaction('app', 'readwrite');
+    transaction.objectStore('app').put(draft, 'draft');
+    await complete(transaction);
+  } finally { db.close(); }
 }
 
-export async function loadDraft(): Promise<Draft | null> {
-  const db = await openDb();
-  const request = db.transaction('app').objectStore('app').get('draft');
-  return requestResult<Draft | null>(request, null);
+export async function loadDraft(scope: StorageScope): Promise<Draft | null> {
+  const db = await openDb(scope);
+  try {
+    const request = db.transaction('app').objectStore('app').get('draft');
+    return await requestResult<Draft | null>(request, null);
+  } finally { db.close(); }
 }
 
-export async function saveRun(run: SavedRun): Promise<void> {
-  const db = await openDb();
-  const transaction = db.transaction('runs', 'readwrite');
-  transaction.objectStore('runs').put(run);
-  await complete(transaction);
+export async function saveRun(run: SavedRun, scope: StorageScope): Promise<void> {
+  const db = await openDb(scope);
+  try {
+    const transaction = db.transaction('runs', 'readwrite');
+    transaction.objectStore('runs').put(run);
+    await complete(transaction);
+  } finally { db.close(); }
 }
 
-export async function loadRuns(): Promise<SavedRun[]> {
-  const db = await openDb();
-  const request = db.transaction('runs').objectStore('runs').getAll();
-  const runs = await requestResult<SavedRun[]>(request, []);
-  return runs.sort((a, b) => b.printedAt.localeCompare(a.printedAt));
+export async function loadRuns(scope: StorageScope): Promise<SavedRun[]> {
+  const db = await openDb(scope);
+  try {
+    const request = db.transaction('runs').objectStore('runs').getAll();
+    const runs = await requestResult<SavedRun[]>(request, []);
+    return runs.sort((a, b) => b.printedAt.localeCompare(a.printedAt));
+  } finally { db.close(); }
 }
 
-export async function deleteRun(id: string): Promise<void> {
-  const db = await openDb();
-  const transaction = db.transaction('runs', 'readwrite');
-  transaction.objectStore('runs').delete(id);
-  await complete(transaction);
+export async function deleteRun(id: string, scope: StorageScope): Promise<void> {
+  const db = await openDb(scope);
+  try {
+    const transaction = db.transaction('runs', 'readwrite');
+    transaction.objectStore('runs').delete(id);
+    await complete(transaction);
+  } finally { db.close(); }
 }
 
-export async function importRuns(runs: SavedRun[]): Promise<void> {
-  const db = await openDb();
-  const transaction = db.transaction('runs', 'readwrite');
-  for (const run of runs) transaction.objectStore('runs').put(run);
-  await complete(transaction);
+export async function importRuns(runs: SavedRun[], scope: StorageScope): Promise<void> {
+  const db = await openDb(scope);
+  try {
+    const transaction = db.transaction('runs', 'readwrite');
+    for (const run of runs) transaction.objectStore('runs').put(run);
+    await complete(transaction);
+  } finally { db.close(); }
+}
+
+export function clearScope(scope: StorageScope): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(databaseName(scope));
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+    request.onblocked = () => reject(new Error('Close other demo tabs before resetting the demo.'));
+  });
 }
 
 function complete(transaction: IDBTransaction): Promise<void> {
   return new Promise((resolve, reject) => {
     transaction.oncomplete = () => resolve();
     transaction.onerror = () => reject(transaction.error);
+    transaction.onabort = () => reject(transaction.error);
   });
 }
 

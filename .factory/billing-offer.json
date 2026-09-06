@@ -1,0 +1,16 @@
+{
+  "slug": "stock-label-run",
+  "name": "Run room upgrade",
+  "price_minor": 1200,
+  "currency": "USD",
+  "price_type": "one_time_price",
+  "return_url": "https://stock-label-run.sociobot.in/",
+  "price_evidence": "The product Terms and earlier live product UI state US $12 once. On 2026-09-06, GET https://api.sociobot.in/api/v1/products/stock-label-run/checkout returned the billing service disabled-product HTTP 404, so checkout is publicly marked unavailable pending billing registration.",
+  "paid_features": [
+    "Unlimited labels per run",
+    "A4 24-up label sheets",
+    "50 × 30 mm roll labels",
+    "Custom label footers"
+  ],
+  "license_validation_path": "https://api.sociobot.in/api/v1/products/stock-label-run/verify?license=<token>"
+}

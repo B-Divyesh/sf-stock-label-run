@@ -52,6 +52,8 @@ Prompt sheet:
 - Generator: Azure AI Foundry `factory-image` via `/opt/fleet/lib/gen-image.sh`
 - Date: 2026-08-28
 - License/provenance: original AI-generated artwork commissioned for Stock Label Run; retained source prompt and candidate in `assets/src/`.
+- Social preview: `public/assets/social-preview.webp` is a 1200 × 630 center crop of the
+  same commissioned illustration, made on 2026-09-06 for Open Graph and Twitter cards.
 
 ## Print system
 
